@@ -6,11 +6,17 @@ using UnityEngine.UI;
 public class characterScript : MonoBehaviour
 {
 
+    Slider hungerBar;
+
     public KeyCode upKey, downKey, leftKey, rightKey, attackKey, useKey, sprintKey;
 
-    public float health, moveSpeed, rotateSpeed;
+    public float health, hunger, moveSpeed, rotateSpeed, hungerDeplenishRate;
+
+    public int stickAmount, meatAmount;
 
     GameObject animMan;
+
+    public GameObject[] stickz, meatz;
 
     Animator anim;
 
@@ -22,6 +28,7 @@ public class characterScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        hungerBar = GameObject.Find("Canvas/Slider").GetComponent<Slider>();
         animMan = GameObject.Find(transform.name + "/everyman");
         anim = GetComponent<Animator>();
     }
@@ -29,6 +36,22 @@ public class characterScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        hungerBar.value = hunger;
+
+        hunger = hunger - hungerDeplenishRate * Time.deltaTime;
+
+        health = health + hunger * 0.02f * Time.deltaTime;
+
+        if(stickAmount > 3)
+        {
+            stickAmount = 3;
+        }
+        if(meatAmount > 3)
+        {
+            meatAmount = 3;
+        }
+        if(health > 100)
+
         //display health
         healthText.text = health.ToString();
 
@@ -99,6 +122,20 @@ public class characterScript : MonoBehaviour
         if(other.tag == "bigEnemyWeapon")
         {
             health = health - Random.Range(18, 22);
+        }
+    }
+
+    public void dropItem()
+    {
+        if(stickAmount > 0)
+        {
+            stickz[stickAmount - 1].SetActive(false);
+            stickAmount--;
+        }
+        if(meatAmount > 0)
+        {
+            meatz[meatAmount - 1].SetActive(false);
+            meatAmount--;
         }
     }
 }

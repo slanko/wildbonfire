@@ -1,0 +1,78 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class itemScript : MonoBehaviour
+{
+
+    Rigidbody rb;
+    Light objectLight;
+    characterScript cScript;
+    public bool Stick, Meat;
+    // Start is called before the first frame update
+    void Start()
+    {
+        transform.parent = null;
+        cScript = GameObject.Find("Player").GetComponent<characterScript>();
+        objectLight = GetComponent<Light>();
+        rb = GetComponent<Rigidbody>();
+        rb.AddForce(new Vector3(Random.Range(-1, 1), 10, Random.Range(-1, 1)), ForceMode.Impulse);
+        rb.AddTorque(new Vector3(Random.Range(-90, 90), Random.Range(-90, 90), Random.Range(-90, 90)), ForceMode.Impulse);
+        objectLight.intensity = 0;
+        if(Stick == true && Meat == true)
+        {
+            print("Removed " + transform.name + " because it had too many types. Set either Meat or Stick, not both you dingus.");
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Player")
+        {
+            objectLight.intensity = 1;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            if (Input.GetKeyDown(cScript.useKey))
+            {
+                if(Stick == true)
+                {
+                    if(cScript.meatAmount == 0)
+                    {
+                        if (cScript.stickAmount <= 3)
+                        {
+                            cScript.stickAmount++;
+                            cScript.stickz[cScript.stickAmount - 1].SetActive(true);
+                            Destroy(gameObject);
+                        }
+                    }
+                }
+                if (Meat == true)
+                {
+                    if (cScript.stickAmount == 0)
+                    {
+                        if(cScript.meatAmount <= 3)
+                        {
+                            cScript.meatAmount++;
+                            cScript.meatz[cScript.meatAmount - 1].SetActive(true);
+                            Destroy(gameObject);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.tag == "Player")
+        {
+            objectLight.intensity = 0;
+        }
+    }
+}
