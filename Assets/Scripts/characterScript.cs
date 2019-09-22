@@ -22,15 +22,18 @@ public class characterScript : MonoBehaviour
 
     public Text healthText;
 
+    fireDropScript fireScript;
+
     //get camera parent object so the camera can follow without taking the player's rotation as well
     public GameObject cCamera;
 
     // Start is called before the first frame update
     void Start()
     {
+        fireScript = GameObject.Find("FireDropRadius").GetComponent<fireDropScript>();
         hungerBar = GameObject.Find("Canvas/Slider").GetComponent<Slider>();
         animMan = GameObject.Find(transform.name + "/everyman");
-        anim = GetComponent<Animator>();
+        anim = GameObject.Find(transform.name + "/everyman/maincharacter").GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -51,6 +54,9 @@ public class characterScript : MonoBehaviour
             meatAmount = 3;
         }
         if(health > 100)
+        {
+            health = 100;
+        }
 
         //display health
         healthText.text = health.ToString();
@@ -73,39 +79,39 @@ public class characterScript : MonoBehaviour
         {
             if (Input.GetKey(leftKey))
             {
-                animMan.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 270, 0), rotateSpeed);
+                animMan.transform.rotation = Quaternion.Euler(0, 270, 0);
                 transform.Translate(((Vector3.left) * moveSpeed) * Time.deltaTime);
             }
             if (Input.GetKey(rightKey))
             {
-                animMan.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 90, 0), rotateSpeed);
+                animMan.transform.rotation = Quaternion.Euler(0, 90, 0);
                 transform.Translate((Vector3.right * moveSpeed) * Time.deltaTime);
             }
             if (Input.GetKey(upKey))
             {
-                animMan.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), rotateSpeed);
+                animMan.transform.rotation = Quaternion.Euler(0, 0, 0);
                 transform.Translate((Vector3.forward * moveSpeed) * Time.deltaTime);
             }
             if (Input.GetKey(downKey))
             {
-                animMan.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 180, 0), rotateSpeed);
+                animMan.transform.rotation = Quaternion.Euler(0, 180, 0);
                 transform.Translate(((Vector3.forward * -1) * moveSpeed) * Time.deltaTime);
             }
             if (Input.GetKey(leftKey) && Input.GetKey(upKey))
             {
-                animMan.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 315, 0), rotateSpeed);
+                animMan.transform.rotation = Quaternion.Euler(0, 315, 0);
             }
             if (Input.GetKey(leftKey) && Input.GetKey(downKey))
             {
-                animMan.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 230, 0), rotateSpeed);
+                animMan.transform.rotation = Quaternion.Euler(0, 230, 0);
             }
             if (Input.GetKey(rightKey) && Input.GetKey(upKey))
             {
-                animMan.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 45, 0), rotateSpeed);
+                animMan.transform.rotation = Quaternion.Euler(0, 45, 0);
             }
             if (Input.GetKey(rightKey) && Input.GetKey(downKey))
             {
-                animMan.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 135, 0), rotateSpeed);
+                animMan.transform.rotation = Quaternion.Euler(0, 135, 0);
             }
         }
     }

@@ -7,7 +7,9 @@ public class fireDropScript : MonoBehaviour
     public GameObject E;
     characterScript cScript;
     gameManager gm;
-
+    public GameObject[] cookingMeatz;
+    public int meatCount;
+    public GameObject cookedMeat;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,7 +41,9 @@ public class fireDropScript : MonoBehaviour
                 if (Input.GetKeyDown(cScript.useKey))
                 {
                     cScript.dropItem();
-                    cScript.hunger = cScript.hunger + 10;
+                    Invoke("makeMeat", 5);
+                    meatCount++;
+                    cookingMeatz[meatCount - 1].SetActive(true);
                 }
             }
             else
@@ -47,6 +51,13 @@ public class fireDropScript : MonoBehaviour
                 E.SetActive(false);
             }
         }
+    }
+
+    void makeMeat()
+    {
+        Instantiate(cookedMeat, new Vector3(0, 0.5f, 0), Quaternion.identity);
+        cookingMeatz[meatCount - 1].SetActive(false);
+        meatCount--;
     }
 
     private void OnTriggerExit(Collider other)

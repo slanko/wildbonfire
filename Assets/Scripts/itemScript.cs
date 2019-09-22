@@ -8,7 +8,7 @@ public class itemScript : MonoBehaviour
     Rigidbody rb;
     Light objectLight;
     characterScript cScript;
-    public bool Stick, Meat;
+    public bool Stick, Meat, cookedMeat;
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +63,12 @@ public class itemScript : MonoBehaviour
                             Destroy(gameObject);
                         }
                     }
+                }
+
+                if (cookedMeat == true)
+                {
+                    cScript.hunger = cScript.hunger + 10;
+                    Destroy(gameObject);
                 }
             }
         }
