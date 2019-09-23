@@ -113,6 +113,15 @@ public class characterScript : MonoBehaviour
             {
                 animMan.transform.rotation = Quaternion.Euler(0, 135, 0);
             }
+
+            if(Input.GetKey(upKey) || Input.GetKey(downKey) || Input.GetKey(leftKey) || Input.GetKey(rightKey))
+            {
+                anim.SetBool("movementkeypressed", true);
+            }
+            else
+            {
+                anim.SetBool("movementkeypressed", false);
+            }
         }
     }
     private void OnTriggerEnter(Collider other)
