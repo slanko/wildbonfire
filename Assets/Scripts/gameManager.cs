@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class gameManager : MonoBehaviour
 {
     public Light fireLight;
@@ -11,6 +12,7 @@ public class gameManager : MonoBehaviour
     public Text winLoseText;
     public float fireAmount, fireDeplenishRate, nightLength, chanceValue;
     public int playTime;
+    public KeyCode quitButton;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,10 @@ public class gameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(quitButton))
+        {
+            SceneManager.LoadScene("Menuwip");
+        }
         if(fireAmount > 0)
         {
             fireAmount = fireAmount - fireDeplenishRate * Time.deltaTime;

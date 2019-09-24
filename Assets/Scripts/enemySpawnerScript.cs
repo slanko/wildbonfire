@@ -14,25 +14,25 @@ public class enemySpawnerScript : MonoBehaviour
         gm = GameObject.Find("GOD").GetComponent<gameManager>();
         dtd = Vector3.Distance(new Vector3(0, 0, 0), transform.position);
 
-        if(dtd < 30)
+        if(dtd < 20)
         {
             tierOne = true;
             tierTwo = false;
             tierThree = false;
         }
-        if(dtd > 30 && dtd < 60)
+        if(dtd > 20 && dtd < 40)
         {
             tierOne = false;
             tierTwo = true;
             tierThree = false;
         }
-        if(dtd > 60)
+        if(dtd > 40)
         {
             tierOne = false;
             tierTwo = false;
             tierThree = true;
         }
-        Invoke("spawnEnemy", 10);
+        Invoke("spawnEnemy", 3);
     }
 
 

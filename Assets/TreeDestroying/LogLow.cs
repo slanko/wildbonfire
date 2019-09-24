@@ -17,6 +17,7 @@ public class LogLow : MonoBehaviour
     {
         if (other.gameObject.tag == "weapon" || other.gameObject.tag == "bigEnemyWeapon")
         {
+            rbLeft.transform.parent = null;
             TheLog.SetActive(false);
             FakeLog.SetActive(true);
             UnParentParticle();
