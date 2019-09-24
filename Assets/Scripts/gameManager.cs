@@ -9,7 +9,8 @@ public class gameManager : MonoBehaviour
     public GameObject stayOutRadius;
     characterScript pScript;
     public Text winLoseText;
-    public float fireAmount, fireDeplenishRate, nightLength;
+    public float fireAmount, fireDeplenishRate, nightLength, chanceValue;
+    public int playTime;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +28,7 @@ public class gameManager : MonoBehaviour
             emission.rateOverTime = fireAmount;
             stayOutRadius.transform.localScale = new Vector3(fireAmount * 2.5f, fireAmount * 2.5f, fireAmount * 2.5f);
         }
-        if(fireAmount <= 0)
+        if(fireAmount <= 0 && pScript.health > 0)
         {
             winLoseText.text = "you let the fire go out...";
             winLoseText.gameObject.SetActive(true);
@@ -36,5 +37,18 @@ public class gameManager : MonoBehaviour
         {
             fireAmount = 15;
         }
+        if (pScript.health <= 0)
+        {
+            winLoseText.text = "you died...";
+            winLoseText.gameObject.SetActive(true);
+        }
+        if(playTime >= nightLength)
+        {
+            winLoseText.text = "you survived the night!";
+            winLoseText.gameObject.SetActive(true);
+        }
+        playTime = Mathf.RoundToInt(playTime + 1 * Time.deltaTime);
+
+        chanceValue = 20 + playTime / 6.5f;
     }
 }

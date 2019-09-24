@@ -8,7 +8,7 @@ public class characterScript : MonoBehaviour
 
     Slider hungerBar;
 
-    public KeyCode upKey, downKey, leftKey, rightKey, attackKey, useKey, sprintKey;
+    public KeyCode upKey, downKey, leftKey, rightKey, attackKey, useKey, dropKey;
 
     public float health, hunger, moveSpeed, rotateSpeed, hungerDeplenishRate;
 
@@ -24,26 +24,39 @@ public class characterScript : MonoBehaviour
 
     fireDropScript fireScript;
 
-    //get camera parent object so the camera can follow without taking the player's rotation as well
-    public GameObject cCamera;
+    ParticleSystem blood;
+
+    //get camera parent object so the camera can follow without taking the player's rotation as well (also hucking stick and meat in here because i can)
+    public GameObject cCamera, stick, meat;
 
     // Start is called before the first frame update
     void Start()
     {
+        blood = GameObject.Find(transform.name + "/everyman/maincharacter/Armature/Hips/Chest/Blood").GetComponent<ParticleSystem>();
         fireScript = GameObject.Find("FireDropRadius").GetComponent<fireDropScript>();
         hungerBar = GameObject.Find("Canvas/Slider").GetComponent<Slider>();
         animMan = GameObject.Find(transform.name + "/everyman");
         anim = GameObject.Find(transform.name + "/everyman/maincharacter").GetComponent<Animator>();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(attackKey))
+        {
+            anim.SetTrigger("axeSwing");
+        }
+    }
+
     // Update is called once per frame
     void FixedUpdate()
-    {
-        hungerBar.value = hunger;
+    {if(health > 0)
+        {
+            hungerBar.value = hunger;
 
-        hunger = hunger - hungerDeplenishRate * Time.deltaTime;
+            hunger = hunger - hungerDeplenishRate * Time.deltaTime;
 
-        health = health + hunger * 0.02f * Time.deltaTime;
+            health = health + hunger * 0.02f * Time.deltaTime;
+        }
 
         if(stickAmount > 3)
         {
@@ -63,15 +76,26 @@ public class characterScript : MonoBehaviour
 
         if(health <= 0)
         {
-            Destroy(gameObject);
+            anim.SetTrigger("die");
         }
 
         //camera follow script
         cCamera.transform.position = transform.position;
 
-        if (Input.GetKeyDown(attackKey))
+        if (Input.GetKeyDown(dropKey))
         {
-            anim.SetTrigger("axeSwing");
+            if (stickAmount > 0)
+            {
+                stickz[stickAmount - 1].SetActive(false);
+                Instantiate(stick, transform.position, transform.rotation);
+                stickAmount--;
+            }
+            if (meatAmount > 0)
+            {
+                meatz[meatAmount - 1].SetActive(false);
+                Instantiate(meat, transform.position, transform.rotation);
+                meatAmount--;
+            }
         }
 
         //actual movement inputs (this is embarrasing code but it works)
@@ -129,14 +153,17 @@ public class characterScript : MonoBehaviour
         if(other.tag == "smallEnemyWeapon")
         {
             health = health - Random.Range(8, 12);
+            blood.Play();
         }
         if(other.tag == "mediumEnemyWeapon")
         {
             health = health - Random.Range(13, 17);
+            blood.Play();
         }
         if(other.tag == "bigEnemyWeapon")
         {
             health = health - Random.Range(18, 22);
+            blood.Play();
         }
     }
 

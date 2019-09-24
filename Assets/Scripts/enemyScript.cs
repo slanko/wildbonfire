@@ -10,6 +10,8 @@ public class enemyScript : MonoBehaviour
     Vector3 navPos;
     bool chasing = false;
     GameObject player;
+    public GameObject schmeat;
+    public float schmeatAmount;
     gameManager gm;
     characterScript cScript;
     ParticleSystem blood;
@@ -20,7 +22,7 @@ public class enemyScript : MonoBehaviour
     void Start()
     {
         blood = GameObject.Find(transform.name + "/Blood").GetComponent<ParticleSystem>();
-        anim = GetComponent<Animator>();
+        anim = GameObject.Find(transform.name + "/Mesh").GetComponent<Animator>();
         nav = GetComponent<NavMeshAgent>();
         player = GameObject.Find("Player");
         //start changeposition once here because after that it calls itself
@@ -34,6 +36,10 @@ public class enemyScript : MonoBehaviour
     void FixedUpdate()
     {
         dtd = Vector3.Distance(player.transform.position, transform.position);
+        if(dtd > 20)
+        {
+            chasing = false;
+        }
         if(dtd < attackThreshold)
         {
             anim.SetTrigger("attack");
@@ -52,6 +58,10 @@ public class enemyScript : MonoBehaviour
         }
         if(health <= 0)
         {
+            for(int i = 0; i < schmeatAmount; i++)
+            {
+                Instantiate(schmeat, transform.position, transform.rotation);
+            }
             Destroy(gameObject);
         }
     }

@@ -10,7 +10,7 @@ public class itemScript : MonoBehaviour
     characterScript cScript;
     public bool Stick, Meat, cookedMeat;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         transform.parent = null;
         cScript = GameObject.Find("Player").GetComponent<characterScript>();
