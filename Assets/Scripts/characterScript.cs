@@ -8,8 +8,6 @@ public class characterScript : MonoBehaviour
 
     Slider hungerBar;
 
-    public KeyCode upKey, downKey, leftKey, rightKey, attackKey, useKey, dropKey;
-
     public float health, hunger, moveSpeed, rotateSpeed, hungerDeplenishRate;
 
     public int stickAmount, meatAmount;
@@ -26,6 +24,8 @@ public class characterScript : MonoBehaviour
 
     ParticleSystem blood;
 
+    private bool isMoving;
+
     //get camera parent object so the camera can follow without taking the player's rotation as well (also hucking stick and meat in here because i can)
     public GameObject cCamera, stick, meat;
 
@@ -41,21 +41,48 @@ public class characterScript : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(attackKey))
+        if (Input.GetButtonDown("swingAxe"))
         {
             anim.SetTrigger("axeSwing");
+        }
+        if (health > 0)
+        {
+            var vert = Input.GetAxisRaw("Vertical");
+            var horiz = Input.GetAxisRaw("Horizontal");
+            Vector3 movement = new Vector3(horiz, 0, vert);
+            isMoving = movement.magnitude > 0;
+            var rotation = new Quaternion(0, 0, 0, 0);
+
+            if (isMoving == true)
+            {
+                anim.SetBool("movementkeypressed", true);
+            }
+            else
+            {
+                anim.SetBool("movementkeypressed", false);
+            }
+
+            var realMove = rotation * movement;
+
+            transform.LookAt(transform.position + realMove);
         }
     }
 
     // Update is called once per frame
     void FixedUpdate()
-    {if(health > 0)
+    {
+        if (health > 0)
         {
             hungerBar.value = hunger;
 
             hunger = hunger - hungerDeplenishRate * Time.deltaTime;
 
             health = health + hunger * 0.02f * Time.deltaTime;
+            if (isMoving)
+            {
+                transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+            }
+
         }
 
         if(stickAmount > 3)
@@ -82,7 +109,7 @@ public class characterScript : MonoBehaviour
         //camera follow script
         cCamera.transform.position = transform.position;
 
-        if (Input.GetKeyDown(dropKey))
+        if (Input.GetButtonDown("dropKey"))
         {
             if (stickAmount > 0)
             {
@@ -95,56 +122,6 @@ public class characterScript : MonoBehaviour
                 meatz[meatAmount - 1].SetActive(false);
                 Instantiate(meat, transform.position, transform.rotation);
                 meatAmount--;
-            }
-        }
-
-        //actual movement inputs (this is embarrasing code but it works)
-        if(health > 0)
-        {
-            if (Input.GetKey(leftKey))
-            {
-                animMan.transform.rotation = Quaternion.Euler(0, 270, 0);
-                transform.Translate(((Vector3.left) * moveSpeed) * Time.deltaTime);
-            }
-            if (Input.GetKey(rightKey))
-            {
-                animMan.transform.rotation = Quaternion.Euler(0, 90, 0);
-                transform.Translate((Vector3.right * moveSpeed) * Time.deltaTime);
-            }
-            if (Input.GetKey(upKey))
-            {
-                animMan.transform.rotation = Quaternion.Euler(0, 0, 0);
-                transform.Translate((Vector3.forward * moveSpeed) * Time.deltaTime);
-            }
-            if (Input.GetKey(downKey))
-            {
-                animMan.transform.rotation = Quaternion.Euler(0, 180, 0);
-                transform.Translate(((Vector3.forward * -1) * moveSpeed) * Time.deltaTime);
-            }
-            if (Input.GetKey(leftKey) && Input.GetKey(upKey))
-            {
-                animMan.transform.rotation = Quaternion.Euler(0, 315, 0);
-            }
-            if (Input.GetKey(leftKey) && Input.GetKey(downKey))
-            {
-                animMan.transform.rotation = Quaternion.Euler(0, 230, 0);
-            }
-            if (Input.GetKey(rightKey) && Input.GetKey(upKey))
-            {
-                animMan.transform.rotation = Quaternion.Euler(0, 45, 0);
-            }
-            if (Input.GetKey(rightKey) && Input.GetKey(downKey))
-            {
-                animMan.transform.rotation = Quaternion.Euler(0, 135, 0);
-            }
-
-            if(Input.GetKey(upKey) || Input.GetKey(downKey) || Input.GetKey(leftKey) || Input.GetKey(rightKey))
-            {
-                anim.SetBool("movementkeypressed", true);
-            }
-            else
-            {
-                anim.SetBool("movementkeypressed", false);
             }
         }
     }

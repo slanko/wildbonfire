@@ -28,6 +28,7 @@ public class enemyScript : MonoBehaviour
         //find gamemanager and characterscripts so we can use the variables later
         gm = GameObject.Find("GOD").GetComponent<gameManager>();
         cScript = player.GetComponent<characterScript>();
+        anim.speed = anim.speed + Random.Range(-0.15f, 0.15f);
     }
 
     private void Update()

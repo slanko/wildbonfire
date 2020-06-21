@@ -25,7 +25,7 @@ public class fireDropScript : MonoBehaviour
             if (cScript.stickAmount > 0)
             {
                 E.SetActive(true);
-                if (Input.GetKeyDown(cScript.useKey))
+                if (Input.GetButtonDown("useKey"))
                 {
                     cScript.dropItem();
                     gm.fireAmount = gm.fireAmount + 2;
@@ -38,7 +38,7 @@ public class fireDropScript : MonoBehaviour
             if (cScript.meatAmount > 0)
             {
                 E.SetActive(true);
-                if (Input.GetKeyDown(cScript.useKey))
+                if (Input.GetButtonDown("useKey"))
                 {
                     cScript.dropItem();
                     Invoke("makeMeat", 5);
