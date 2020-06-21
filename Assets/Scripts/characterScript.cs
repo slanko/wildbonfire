@@ -49,7 +49,7 @@ public class characterScript : MonoBehaviour
         {
             var vert = Input.GetAxisRaw("Vertical");
             var horiz = Input.GetAxisRaw("Horizontal");
-            Vector3 movement = new Vector3(horiz, 0, vert);
+            Vector3 movement = new Vector3(horiz, 0, vert).normalized;
             isMoving = movement.magnitude > 0;
             var rotation = new Quaternion(0, 0, 0, 0);
 
