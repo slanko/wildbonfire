@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class characterScript : MonoBehaviour
 {
+    public int playerNum;
 
-    Slider hungerBar;
+
+    public Slider hungerBar;
 
     public float health, hunger, moveSpeed, rotateSpeed, hungerDeplenishRate;
 
@@ -34,21 +36,20 @@ public class characterScript : MonoBehaviour
     {
         blood = GameObject.Find(transform.name + "/everyman/maincharacter/Armature/Hips/Chest/Blood").GetComponent<ParticleSystem>();
         fireScript = GameObject.Find("FireDropRadius").GetComponent<fireDropScript>();
-        hungerBar = GameObject.Find("Canvas/Slider").GetComponent<Slider>();
         animMan = GameObject.Find(transform.name + "/everyman");
         anim = GameObject.Find(transform.name + "/everyman/maincharacter").GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown("swingAxe"))
+        if (Input.GetButtonDown("swingAxe" + playerNum))
         {
             anim.SetTrigger("axeSwing");
         }
         if (health > 0)
         {
-            var vert = Input.GetAxisRaw("Vertical");
-            var horiz = Input.GetAxisRaw("Horizontal");
+            var vert = Input.GetAxisRaw("Vertical" + playerNum);
+            var horiz = Input.GetAxisRaw("Horizontal" + playerNum);
             Vector3 movement = new Vector3(horiz, 0, vert).normalized;
             isMoving = movement.magnitude > 0;
             var rotation = new Quaternion(0, 0, 0, 0);
@@ -109,7 +110,7 @@ public class characterScript : MonoBehaviour
         //camera follow script
         cCamera.transform.position = transform.position;
 
-        if (Input.GetButtonDown("dropKey"))
+        if (Input.GetButtonDown("dropKey" + playerNum))
         {
             if (stickAmount > 0)
             {

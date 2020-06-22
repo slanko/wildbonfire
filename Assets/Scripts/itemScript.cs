@@ -38,7 +38,7 @@ public class itemScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            if (Input.GetButtonDown("useKey"))
+            if (Input.GetButtonDown("useKey1"))
             {
                 if(Stick == true)
                 {
