@@ -9,6 +9,7 @@ TagManager:
   - mediumEnemyWeapon
   - bigEnemyWeapon
   - Item
+  - Player2
   layers:
   - Default
   - TransparentFX
