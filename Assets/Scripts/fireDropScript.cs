@@ -14,7 +14,6 @@ public class fireDropScript : MonoBehaviour
     void Start()
     {
         E.SetActive(false);
-        cScript = GameObject.Find("Player").GetComponent<characterScript>();
         gm = GameObject.Find("GOD").GetComponent<gameManager>();
     }
 
@@ -22,10 +21,11 @@ public class fireDropScript : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
+            cScript = other.GetComponent<characterScript>();
             if (cScript.stickAmount > 0)
             {
                 E.SetActive(true);
-                if (Input.GetButtonDown("useKey"))
+                if (Input.GetButtonDown("useKey1") || Input.GetButtonDown("useKey2"))
                 {
                     cScript.dropItem();
                     gm.fireAmount = gm.fireAmount + 2;
@@ -38,7 +38,7 @@ public class fireDropScript : MonoBehaviour
             if (cScript.meatAmount > 0)
             {
                 E.SetActive(true);
-                if (Input.GetButtonDown("useKey"))
+                if (Input.GetButtonDown("useKey1") || Input.GetButtonDown("useKey2"))
                 {
                     cScript.dropItem();
                     Invoke("makeMeat", 5);
