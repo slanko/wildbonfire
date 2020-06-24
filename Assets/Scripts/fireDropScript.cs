@@ -22,28 +22,28 @@ public class fireDropScript : MonoBehaviour
         if(other.gameObject.tag == "Player")
         {
             cScript = other.GetComponent<characterScript>();
-            if (cScript.stickAmount > 0)
+            if (cScript.stickAmount > 0 || cScript.meatAmount > 0)
             {
                 E.SetActive(true);
-                if (Input.GetButtonDown("useKey1") || Input.GetButtonDown("useKey2"))
+                if (Input.GetButtonDown("useKey1"))
                 {
-                    cScript.dropItem();
-                    gm.fireAmount = gm.fireAmount + 2;
+                    shamizzle();
                 }
             }
             else
             {
                 E.SetActive(false);
             }
-            if (cScript.meatAmount > 0)
+        }
+        if(other.tag == "Player2")
+        {
+            cScript = other.GetComponent<characterScript>();
+            if (cScript.stickAmount > 0 || cScript.meatAmount > 0)
             {
                 E.SetActive(true);
-                if (Input.GetButtonDown("useKey1") || Input.GetButtonDown("useKey2"))
+                if (Input.GetButtonDown("useKey2"))
                 {
-                    cScript.dropItem();
-                    Invoke("makeMeat", 5);
-                    meatCount++;
-                    cookingMeatz[meatCount - 1].SetActive(true);
+                    shamizzle();
                 }
             }
             else
@@ -65,6 +65,22 @@ public class fireDropScript : MonoBehaviour
         if(other.gameObject.tag == "Player" && E.activeSelf == true)
         {
             E.SetActive(false);
+        }
+    }
+
+    void shamizzle()
+    {
+        if (cScript.stickAmount > 0)
+        {
+                cScript.dropItem();
+                gm.fireAmount = gm.fireAmount + 2;
+        }
+        if (cScript.meatAmount > 0)
+        {
+                cScript.dropItem();
+                Invoke("makeMeat", 5);
+                meatCount++;
+                cookingMeatz[meatCount - 1].SetActive(true);
         }
     }
 }

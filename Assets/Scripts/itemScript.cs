@@ -28,7 +28,7 @@ public class itemScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if(other.gameObject.tag == "Player" || other.gameObject.tag == "Player2")
         {
             objectLight.intensity = 1;
         }
@@ -38,47 +38,61 @@ public class itemScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            cScript = other.GetComponent<characterScript>();
             if (Input.GetButtonDown("useKey1"))
             {
-                if(Stick == true)
-                {
-                    if(cScript.meatAmount == 0)
-                    {
-                        if (cScript.stickAmount <= 3)
-                        {
-                            cScript.stickAmount++;
-                            cScript.stickz[cScript.stickAmount - 1].SetActive(true);
-                            Destroy(gameObject);
-                        }
-                    }
-                }
-                if (Meat == true)
-                {
-                    if (cScript.stickAmount == 0)
-                    {
-                        if(cScript.meatAmount <= 3)
-                        {
-                            cScript.meatAmount++;
-                            cScript.meatz[cScript.meatAmount - 1].SetActive(true);
-                            Destroy(gameObject);
-                        }
-                    }
-                }
-
-                if (cookedMeat == true)
-                {
-                    cScript.hunger = cScript.hunger + 10;
-                    Destroy(gameObject);
-                }
+                shamoozle();
+            }
+        }
+        if(other.gameObject.tag == "Player2")
+        {
+            cScript = other.GetComponent<characterScript>();
+            if (Input.GetButtonDown("useKey2"))
+            {
+                shamoozle();
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if(other.gameObject.tag == "Player" || other.gameObject.tag == "Player2")
         {
             objectLight.intensity = 0;
+        }
+    }
+
+    public void shamoozle()
+    {
+        if (Stick == true)
+        {
+            if (cScript.meatAmount == 0)
+            {
+                if (cScript.stickAmount <= 3)
+                {
+                    cScript.stickAmount++;
+                    cScript.stickz[cScript.stickAmount - 1].SetActive(true);
+                    Destroy(gameObject);
+                }
+            }
+        }
+        if (Meat == true)
+        {
+            if (cScript.stickAmount == 0)
+            {
+                if (cScript.meatAmount <= 3)
+                {
+                    cScript.meatAmount++;
+                    cScript.meatz[cScript.meatAmount - 1].SetActive(true);
+                    Destroy(gameObject);
+                }
+            }
+        }
+
+        if (cookedMeat == true)
+        {
+            cScript.hunger = cScript.hunger + 10;
+            Destroy(gameObject);
         }
     }
 }

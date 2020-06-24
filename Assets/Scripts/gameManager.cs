@@ -13,10 +13,18 @@ public class gameManager : MonoBehaviour
     public float fireAmount, fireDeplenishRate, nightLength, chanceValue;
     public int playTime;
     public KeyCode quitButton;
+    public float playerCount;
+    public GameObject singlePlayerCanvas, multiPlayerCanvas, singleText, multiText;
     // Start is called before the first frame update
     void Start()
     {
         pScript = GameObject.Find("Player").GetComponent<characterScript>();
+        if(playerCount == 1)
+        {
+            singlePlayerCanvas.SetActive(true);
+            multiPlayerCanvas.SetActive(false);
+            winLoseText = singleText.GetComponent<Text>();
+        }
     }
 
     // Update is called once per frame

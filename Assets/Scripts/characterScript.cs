@@ -7,6 +7,7 @@ public class characterScript : MonoBehaviour
 {
     public int playerNum;
 
+    gameManager gM;
 
     public Slider hungerBar;
 
@@ -34,10 +35,12 @@ public class characterScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gM = GameObject.Find("GOD").GetComponent<gameManager>();
         blood = GameObject.Find(transform.name + "/everyman/maincharacter/Armature/Hips/Chest/Blood").GetComponent<ParticleSystem>();
         fireScript = GameObject.Find("FireDropRadius").GetComponent<fireDropScript>();
         animMan = GameObject.Find(transform.name + "/everyman");
         anim = GameObject.Find(transform.name + "/everyman/maincharacter").GetComponent<Animator>();
+        gM.playerCount++;
     }
 
     private void Update()
